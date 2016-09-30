@@ -43,6 +43,8 @@ module Poseidon
     # @api private
     class MessageSizeTooLarge < ProtocolError; end
     # @api private
+    class NotEnoughReplicas < ProtocolError; end
+    # @api private
     class UnrecognizedProtocolError < ProtocolError; end
 
     # @api private
@@ -59,7 +61,8 @@ module Poseidon
       7 => RequestTimedOut,
       8 => BrokerNotAvailable,
       9 => ReplicaNotAvailable,
-      10 => MessageSizeTooLarge
+      10 => MessageSizeTooLarge,
+      19 => NotEnoughReplicas
     }
 
     # Raised when a custom partitioner tries to send
