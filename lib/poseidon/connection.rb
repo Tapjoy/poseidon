@@ -113,7 +113,11 @@ module Poseidon
 
     # Explained on http://spin.atomicobject.com/2013/09/30/socket-connection-timeout-ruby/
     def connect_with_timeout(host, port, timeout = 5)
-      addr = Socket.getaddrinfo(host, nil)
+      begin
+        addr = Socket.getaddrinfo(host, nil)
+      rescue SocketError => e
+        raise SystemCallError.new("failed resolving hostname #{host}")
+      end
       sockaddr = Socket.pack_sockaddr_in(port, addr[0][3])
 
       Socket.new(Socket.const_get(addr[0][0]), Socket::SOCK_STREAM, 0).tap do |socket|
