@@ -37,7 +37,7 @@ module Poseidon
     end
 
     # We can always retry these errors because they mean none of the kafka brokers persisted the message
-    ALWAYS_RETRYABLE = [Poseidon::Errors::LeaderNotAvailable, Poseidon::Errors::NotLeaderForPartition]
+    ALWAYS_RETRYABLE = [Poseidon::Errors::LeaderNotAvailable, Poseidon::Errors::NotLeaderForPartition, Poseidon::Errors::NotEnoughReplicas]
 
     def successfully_sent(producer_response)
       failed = []

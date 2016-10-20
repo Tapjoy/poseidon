@@ -56,7 +56,11 @@ module Poseidon
 
     def available_partitions
       @available_partitions ||= struct.partitions.select do |partition|
-        partition.error == 0 && partition.leader != -1
+        # missing 1 or more replicas (error code 9) should not "blacklist" a partition
+        # there is risk we will try sending messages to leader for a partition that
+        # does not meet 'request.required.acks' if that is set to a positive #, or
+        # 'request.required.acks=-1' && 'min.insync.replicas' on the topic is set > 1
+        (partition.error == 9 || partition.error == 0) && partition.leader != -1
       end
     end
 
